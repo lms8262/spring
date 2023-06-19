@@ -2,14 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}">
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
 
-<link rel="stylesheet" type="text/css" href="css/created.css" />
+<th:block layout:fragment="css">
+	<link rel="stylesheet" type="text/css" href="css/created.css" />
+</th:block>
 
-</head>
-<body>
 	<div layout:fragment="content" id="bbs">
 		<form action="" method="" name="">
 			<div id="bbsCreated">
@@ -77,5 +74,5 @@
 			
 		</script>
 	</th:block>
-</body>
+
 </html>
