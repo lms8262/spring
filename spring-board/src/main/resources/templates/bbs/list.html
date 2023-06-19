@@ -71,7 +71,7 @@
 
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
-        var errorMessage1 = [[${param.errorMessage}]]; //get방식으로 가져올때 대비
+		var errorMessage1 = [[${param.errorMessage}]]; //get방식으로 가져올때 대비
         var errorMessage2 = [[${errorMessage}]]; //post 방식으로 가져올때 대비
 
         if(errorMessage1 != null){
