@@ -1,5 +1,7 @@
 package com.example.board2.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,16 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void insertData(Board board) throws Exception {
 		boardMapper.insertData(board);
+	}
+
+	@Override
+	public int getDataCount(String searchKey, String searchValue) throws Exception {
+		return boardMapper.getDataCount(searchKey, searchValue);
+	}
+
+	@Override
+	public List<Board> getLists(String searchKey, String searchValue, int start, int end) throws Exception {
+		return boardMapper.getLists(searchKey, searchValue, start, end);
 	}
 
 }

@@ -15,5 +15,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values(#{num}, #{name}, #{pwd}, #{email}, #{subject}, #{content},
 		#{ipAddr}, 0, sysdate)
 	</insert>
-
+	
+	<select id="getDataCount" parameterType="map" resultType="int">
+		select nvl(count(*), 0) from board where ${searchKey} like '%' || #{searchValue} || '%'
+	</select>
+	
+	<select id="getLists" parameterType="map" resultType="Board">
+		select * from (
+    		select rownum rnum, data.* from (
+        		select num, name, subject, hitCount, to_char(created, 'YYYY-MM-DD') created
+        		from board
+        		where ${searchKey} like '%' || #{searchValue} || '%'
+        		order by num desc
+ 		   	) data
+		)
+		<![CDATA[
+			where rnum >= #{start} and rnum <= #{end}
+		]]>
+	</select>
+	
 </mapper>
