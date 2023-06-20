@@ -43,4 +43,14 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.getReadData(num);
 	}
 
+	@Override
+	public void updateData(Board board) throws Exception {
+		boardMapper.updateData(board);
+	}
+
+	@Override
+	public void deleteData(int num) throws Exception {
+		boardMapper.deleteData(num);
+	}
+
 }

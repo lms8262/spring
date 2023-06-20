@@ -6,8 +6,8 @@
 <th:block layout:fragment="css">
 	<link rel="stylesheet" type="text/css" href="css/article.css" />
 </th:block>
-
-	<div layout:fragment="content" id="bbs">
+	
+	<div layout:fragment="content" id="bbs" th:if="${#strings.isEmpty(errorMessage)}">
 		<div id="bbsArticle">
 			<div id="bbsArticle_header">
 				<p th:text="${board.subject}"></p>
@@ -55,7 +55,10 @@
 	</div>
 	<th:block layout:fragment="script">
 		<script th:inline="javascript">
-			
+			var errorMessage = [[${errorMessage}]];
+			if(errorMessage != null) {
+				alert(errorMessage);
+			}
 		</script>
 	</th:block>
 

@@ -42,4 +42,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from board where num = #{num}
 	</select>
 	
+	<update id="updateData" parameterType="Board">
+		update board set name=#{name}, pwd=#{pwd}, email=#{email}, subject=#{subject}, content=#{content} where num = #{num}
+	</update>
+	
+	<delete id="deleteData" parameterType="int">
+		delete board where num = #{num}
+	</delete>
+	
 </mapper>
