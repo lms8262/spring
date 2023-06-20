@@ -100,7 +100,7 @@ public class BoardController {
 			// 4. 페이징 처리를 한다
 			String param = "";
 			
-			if(searchValue != null & searchValue.equals("")) {
+			if(searchValue != null && !searchValue.equals("")) {
 				// 검색어가 있다면
 				param = "searchKey=" + searchKey;
 				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8"); // 컴퓨터의 언어로 인코딩
@@ -115,6 +115,17 @@ public class BoardController {
 			
 			String pageIndexList = myUtil.pageIntdexList(currentPage, totalPage, listUrl);
 			
+			String articleUrl = "/article?pageNum=" + currentPage;
+			
+			if(!param.equals("")) {
+				articleUrl += "&" + param;
+				// /article?pageNum=1&searchKey=subject&searchValue=춘식
+			}
+			
+			model.addAttribute("lists", lists); // DB에서 가져온 전체 게시물
+			model.addAttribute("articleUrl", articleUrl); // 상세페이지로 이동하기 위한 url
+			model.addAttribute("pageIndexList", pageIndexList); // ◀이전 1 2 3 4 5 다음▶
+			model.addAttribute("dataCount", dataCount); // 전체 게시물의 개수
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -146,7 +157,45 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/article", method = RequestMethod.GET)
-	public String article() {
+	public String article(HttpServletRequest request, Model model) {
+		try {
+			int num = Integer.parseInt(request.getParameter("num"));
+			String pageNum = request.getParameter("pageNum");
+			String searchKey = request.getParameter("searchKey");
+			String searchValue = request.getParameter("searchValue");
+			
+			if(searchValue != null) {
+				searchValue = URLDecoder.decode(searchValue, "UTF-8");
+			}
+			
+			// 1. 조회수 늘리기
+			boardService.updateHitCount(num);
+			
+			// 2. 게시물 데이터 가져오기
+			Board board = boardService.getReadData(num);
+			if(board == null) {
+				return "redirect:/list?pageNum=" + pageNum;
+			}
+			// 게시글의 라인수를 구한다
+			int lineSu = board.getContent().split("\n").length;
+			
+			String param = "pageNum=" + pageNum;
+			
+			if(searchValue != null && !searchValue.equals("")) {
+				// 검색어가 있다면
+				param += "&searchKey=" + searchKey;
+				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8"); // 컴퓨터의 언어로 인코딩
+			}
+			
+			model.addAttribute("board", board);
+			model.addAttribute("params", param);
+			model.addAttribute("lineSu", lineSu);
+			model.addAttribute("pageNum", pageNum);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return "bbs/article";
 	}
 }

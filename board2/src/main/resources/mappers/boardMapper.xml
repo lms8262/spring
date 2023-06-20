@@ -34,4 +34,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		]]>
 	</select>
 	
+	<update id="updateHitCount" parameterType="int">
+		update board set hitCount = hitCount +1 where num = #{num}
+	</update>
+	
+	<select id="getReadData" parameterType="int" resultType="Board">
+		select * from board where num = #{num}
+	</select>
+	
 </mapper>
