@@ -1,8 +1,8 @@
 @charset "UTF-8";
 
 * {
-	margin:0px;
-	padding:0px;
+	margin: 0px;
+	padding: 0px;
 }
 
 a {
@@ -21,11 +21,11 @@ a:hover, a:active {
 
 .header {
 	width: 1000px;
-	height: 150px;
+	height: 120px;
 	margin: 0 auto;
 	text-align: center;
-	line-height: 150px;
-	background-color: silver;
+	line-height: 120px;
+	background-color: lightgray;
 }
 
 .header a {
@@ -35,13 +35,18 @@ a:hover, a:active {
 
 .content {
 	width: 1000px;
-	min-height: 500px;
 	margin: 0 auto;
 }
 
 .footer {
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+}
+
+.footer_content {
 	width: 1000px;
-	height: 100px;
+	height: 80px;
 	margin: 0 auto;
-	background-color: silver;
+	background-color: lightgray;
 }

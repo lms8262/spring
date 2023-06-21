@@ -253,8 +253,8 @@ public class BoardController {
 		return "bbs/article";
 	}
 
-	@RequestMapping(value = "/deleted_ok", method = { RequestMethod.GET })
-	public String deledeOK(HttpServletRequest request, Model model) {
+	@RequestMapping(value = "/deleted_ok", method = RequestMethod.GET)
+	public String deleteOK(HttpServletRequest request, Model model) {
 		int num = Integer.parseInt(request.getParameter("num"));
 		String pageNum = request.getParameter("pageNum");
 		String searchKey = request.getParameter("searchKey");

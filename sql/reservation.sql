@@ -20,4 +20,9 @@ create table reservation (
     CONSTRAINT reservation_fk FOREIGN KEY(airplane_no) REFERENCES airplane(airplane_no) on delete cascade
 );
 
+-- db에서 꺼내올때 가져올 방식(수정화면 input창에 넣을때)
+select to_char(sysdate, 'YYYY-MM-DD')||'T'||to_char(sysdate, 'HH:MI:SS') departrue_date from dual;
+
+-- 테이블에 insert할때 넣을 방식
+select to_date('2023-06-22오전01:57', 'YYYY-MM-DDPMHH:MI:SS') from dual;
 

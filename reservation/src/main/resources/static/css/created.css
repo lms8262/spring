@@ -1,7 +1,12 @@
 @charset "UTF-8";
 
+#created {
+	margin: 0;
+}
+
 #created_footer {
 	text-align: center;
+	margin: 10px;
 }
 
 #created_footer * {
