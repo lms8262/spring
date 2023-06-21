@@ -1,0 +1,33 @@
+항공예약 시스템
+
+항공편 등록
+예약하기
+
+비행기 테이블
+airplane
+airplane_no 	비행기번호 p키	number		int
+airplane_name 	편명		varchar2		String	ㅇ
+departrue_date 	출발일시		date		String	ㅇ
+arrival_date 	도착일시		date		String	ㅇ
+departrue 	출발지		varchar2		String	ㅇ
+arrival 		도착지		varchar2		String	ㅇ
+left_seat		남은 좌석 수	number		int
+total_seat		총 좌석수		number		int	ㅇ
+price		가격		number		int	ㅇ
+
+예약 테이블
+reservation
+reservation_no 	예약번호 p키	number		int
+airplane_no	비행기번호 f키	number		int
+user_name 	예약자명		varchar2		String
+user_email	예약자 이메일	varchar2		String
+user_phone	예약자 전화번호	varchar2		String
+reservation_date	예약일자		date		String(등록시엔 sysdate, 불러올땐 to_char)
+
+index		항공 목록이 보이는 메인 페이지(항공편 등록, 검색기능, 페이징)
+created		항공편 등록 페이지(등록, 취소)
+airplane		index화면에서 편명 클릭시 이동하는 페이지(수정하기, 삭제하기, 예약하기, 예약 회원 리스트 보기, 뒤로가기)
+updated		항공편 수정 페이지(수정, 취소)
+reservation	항공편 예약하는 페이지(예약, 뒤로가기)
+list		예약 회원 리스트 보여주는 페이지(예약 취소, 뒤로가기, 페이징)
+

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="css">
+	<link rel="stylesheet" type="text/css" href="css/index.css" />
+</th:block>
+
+<div layout:fragment="content">
+	<div id="index_header">
+		<div id="leftHeader">
+			<form action="/list" method="post" name="searchForm">
+				<select name="searchKey" class="form-select"
+					aria-label="Default select example">
+					<option value="airplane_name">편명</option>
+					<option value="departrue">출발지</option>
+					<option value="arrival">도착지</option>
+				</select>
+				<input class="form-control" type="text" aria-label="default input example" name="searchValue" />
+				<input type="button" value=" 검 색 " class="btn btn-primary btn-sm" />
+			</form>
+		</div>
+		<div id="rightHeader">
+			<input type="button" value=" 항공편 등록 " class="btn btn-primary" onclick="javascript:location.href='/created';" />
+		</div>
+	</div>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">번호</th>
+				<th scope="col">편명</th>
+				<th scope="col">출발지</th>
+				<th scope="col">도착지</th>
+				<th scope="col">가격</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td scope="row">1
+				</th>
+				<td>12222222222222222</td>
+				<td>1</td>
+				<td>1</td>
+				<td>1</td>
+			</tr>
+			<tr>
+				<td scope="row">2
+				</th>
+				<td>2</td>
+				<td>2</td>
+				<td>2</td>
+				<td>2</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+		function sendIt() {
+			var f = document.searchForm;
+			var str = f.searchValue.value;
+			str = str.trim();
+
+			if (!str) {
+				alert("검색어를 입력하세요.");
+				f.searchValue.focus();
+				return;
+			}
+
+			f.submit();
+		}
+	</script>
+</th:block>
+
+</html>

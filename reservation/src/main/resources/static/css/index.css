@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+#index_header {
+	display: flex;
+	justify-content: space-between;
+}
+
+#leftHeader {
+	width: 400px;
+}
+
+#leftHeader form {
+	display: flex;
+}
+
+#leftHeader form * {
+	margin: 10px 10px 10px 5px;
+}
+
+#rightHeader {
+	width: 300px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+#created_footer {
+	text-align: center;
+}
+
+#created_footer * {
+	margin: 10px;
+}

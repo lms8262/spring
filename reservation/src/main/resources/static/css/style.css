@@ -1,0 +1,47 @@
+@charset "UTF-8";
+
+* {
+	margin:0px;
+	padding:0px;
+}
+
+a {
+	cursor: pointer;
+	color: #000000 !important;
+	text-decoration: none !important;
+	font-size: 9pt;
+	line-height: 150%;
+}
+
+a:hover, a:active {
+	font-size: 9pt;
+	color: blue !important;
+	text-decoration: none;
+}
+
+.header {
+	width: 1000px;
+	height: 150px;
+	margin: 0 auto;
+	text-align: center;
+	line-height: 150px;
+	background-color: silver;
+}
+
+.header a {
+	font-size: 40px;
+	font-weight: bold;
+}
+
+.content {
+	width: 1000px;
+	min-height: 500px;
+	margin: 0 auto;
+}
+
+.footer {
+	width: 1000px;
+	height: 100px;
+	margin: 0 auto;
+	background-color: silver;
+}
