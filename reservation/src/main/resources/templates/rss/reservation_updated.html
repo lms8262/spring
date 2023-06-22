@@ -12,26 +12,37 @@
 		<div id="created" class="row g-3">
 			<div class="col-md-6">
 				<label for="user_name" class="form-label">이름</label>
-				<input type="text" class="form-control" id="user_name" name="user_name" />
+				<input type="text" class="form-control" id="user_name" name="user_name" th:value="${reservation.user_name}" />
 			</div>
 			<div class="col-md-6">
 				<label for="airplane_name" class="form-label">편명</label>
-				<input type="text" class="form-control" id="airplane_name" name="airplane_name" readonly />
+				<input type="text" class="form-control" id="airplane_name" name="airplane_name" readonly th:value="${airplane_name}" />
 			</div>
 			<div class="col-md-6">
 				<label for="user_email" class="form-label">이메일</label>
-				<input type="email" class="form-control" id="user_email" name="user_email" />
+				<input type="email" class="form-control" id="user_email" name="user_email" th:value="${reservation.user_email}" />
 			</div>
 			<div class="col-md-6">
 				<label for="user_phone" class="form-label">전화번호</label>
-				<input type="text" class="form-control" id="user_phone" name="user_phone" />
+				<input type="text" class="form-control" id="user_phone" name="user_phone" th:value="${reservation.user_phone}" />
 			</div>
 		</div>
+		
 		<div id="created_footer">
-			<input type="button" value=" 등록하기 " class="btn btn-primary" onclick="sendIt();" />
-			<input type="reset" value=" 다시입력 " class="btn btn-secondary" onclick="document.myForm.airplane_name.focus();" />
-			<input type="button" value=" 작성취소 " class="btn btn-danger" onclick="javascript:location.href='/index';" />
+			<!-- 수정하기를 누르면 post 방식으로 데이터가 전달되므로
+			기존의 get방식으로 사용하던 데이터들은 아래와 같이 넘겨준다. -->
+			<input type="hidden" name="reservation_no" th:value="${reservation.reservation_no}" />
+			<input type="hidden" name="airplane_no" th:value="${reservation.airplane_no}" />
+			<input type="hidden" name="pageNum" th:value="${pageNum}" />
+			<input type="hidden" name="pageNum2" th:value="${pageNum2}" />
+			<input type="hidden" name="searchKey" th:value="${searchKey}" />
+			<input type="hidden" name="searchValue" th:value="${searchValue}" />
+		
+			<input type="button" value=" 수정하기 " class="btn btn-primary" onclick="sendIt();" />
+			<input type="reset" value=" 다시입력 " class="btn btn-secondary" onclick="document.myForm.user_name.focus();" />
+			<input type="button" value=" 돌아가기 " class="btn btn-danger" th:onclick="|location.href='reservation_status?airplane_no=@{${reservation.airplane_no}}&reservation_no=@{${reservation.reservation_no}}&@{${params}}'|" />
 		</div>
+		
 	</form>
 </div>
 

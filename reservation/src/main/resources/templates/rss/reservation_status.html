@@ -14,25 +14,25 @@
 		<div class="card-body">
 			<h3 class="card-title">예약 현황</h3>
 			<p class="card-text">
-			<b>편명:</b> 입력
+			<b>편명: </b> <span th:text="${airplane_name}"></span>
 			<br>
-			<b>예약자명:</b> 입력
+			<b>예약자명: </b> <span th:text="${reservation.user_name}"></span>
 			<br>
-			<b>이메일:</b> 입력
+			<b>이메일: </b> <span th:text="${reservation.user_email}"></span>
 			<br>
-			<b>전화번호:</b> 입력
+			<b>전화번호: </b> <span th:text="${reservation.user_phone}"></span>
 			<br>
-			<b>예약일자:</b> 입력
+			<b>예약일시: </b> <span th:text="${reservation.reservation_date}"></span>
 			</p>
 		</div>
-	<div class="col-3"></div>
 	</div>
+	<div class="col-3"></div>
 	</div>
 	
 	<div class="airplane_buttons">
-				<input type="button" value=" 예약수정 " class="btn btn-primary" onclick="javascript:location.href='/reservation_updated';" />
-				<input type="button" value=" 예약취소 " class="btn btn-danger" onclick="javascript:location.href='/deleted_reservation_ok';" />
-				<input type="button" value=" 목록으로 " class="btn btn-primary" onclick="javascript:location.href='/index';" />
+		<input type="button" value=" 예약수정 " class="btn btn-primary" th:onclick="|location.href='reservation_updated?reservation_no=@{${reservation.reservation_no}}&@{${params}}'|" />
+		<input type="button" value=" 예약취소 " class="btn btn-danger" th:onclick="|location.href='deleted_reservation_ok?reservation_no=@{${reservation.reservation_no}}&@{${params}}'|" />
+		<input type="button" value=" 돌아가기 " class="btn btn-primary" th:onclick="|location.href='airplane?@{${params}}'|" />
 	</div>
 </div>
 

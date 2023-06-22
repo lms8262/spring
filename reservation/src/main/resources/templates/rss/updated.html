@@ -12,37 +12,47 @@
 		<div id="created" class="row g-3">
 			<div class="col-md-4">
 				<label for="airplane_name" class="form-label">편명</label>
-				<input type="email" class="form-control" id="airplane_name" name="airplane_name" />
+				<input type="text" class="form-control" id="airplane_name" name="airplane_name" th:value="${airplane.airplane_name}" />
 			</div>
 			<div class="col-md-4">
 				<label for="departrue_date" class="form-label">출발일시</label>
-				<input type="datetime-local" class="form-control" id="departrue_date" name="departrue_date" />
+				<input type="datetime-local" class="form-control" id="departrue_date" name="departrue_date" th:value="${airplane.departrue_date}" />
 			</div>
 			<div class="col-md-4">
 				<label for="arrival_date" class="form-label">도착일시</label>
-				<input type="datetime-local" class="form-control" id="arrival_date" name="arrival_date" />
+				<input type="datetime-local" class="form-control" id="arrival_date" name="arrival_date" th:value="${airplane.arrival_date}" />
 			</div>
 			<div class="col-md-6">
 				<label for="departrue" class="form-label">출발지</label>
-				<input type="text" class="form-control" id="departrue" name="departrue" />
+				<input type="text" class="form-control" id="departrue" name="departrue" th:value="${airplane.departrue}" />
 			</div>
 			<div class="col-md-6">
 				<label for="arrival" class="form-label">도착지</label>
-				<input type="text" class="form-control" id="arrival" name="arrival" />
+				<input type="text" class="form-control" id="arrival" name="arrival" th:value="${airplane.arrival}" />
 			</div>
 			<div class="col-md-6">
 				<label for="total_seat	" class="form-label">총 좌석수</label>
-				<input type="number" class="form-control" id="total_seat" name="total_seat" min="0" numberOnly />
+				<input type="number" class="form-control" id="total_seat" name="total_seat" min="0" numberOnly th:value="${airplane.total_seat}" />
 			</div>
 			<div class="col-md-6">
 				<label for="price" class="form-label">가격</label>
-				<input type="number" class="form-control" id="price" name="price" min="0" numberOnly />
+				<input type="number" class="form-control" id="price" name="price" min="0" numberOnly th:value="${airplane.price}" />
 			</div>
 		</div>
+		
 		<div id="created_footer">
+			<!-- 수정하기를 누르면 post 방식으로 데이터가 전달되므로
+			기존의 get방식으로 사용하던 데이터들은 아래와 같이 넘겨준다. -->
+			<input type="hidden" name="airplane_no" th:value="${airplane.airplane_no}" />
+			<input type="hidden" name="pageNum" th:value="${pageNum}" />
+			<input type="hidden" name="pageNum2" th:value="${pageNum2}" />
+			<input type="hidden" name="searchKey" th:value="${searchKey}" />
+			<input type="hidden" name="searchValue" th:value="${searchValue}" />
+		
 			<input type="button" value=" 수정하기 " class="btn btn-primary" onclick="sendIt();" />
-			<input type="button" value=" 수정취소 " class="btn btn-danger" onclick="javascript:location.href='/index';" />
+			<input type="button" value=" 수정취소 " class="btn btn-danger" th:onclick="|location.href='airplane?airplane_no=${airplane.airplane_no}&@{${params}}'|" />
 		</div>
+		
 	</form>
 </div>
 

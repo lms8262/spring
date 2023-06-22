@@ -33,4 +33,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		]]>
 	</insert>
 	
+	<select id="getReadAirplaneData" parameterType="int" resultType="Airplane">
+		select * from airplane where airplane_no = #{airplane_no}
+	</select>
+	
+	<update id="minusLeftSeat" parameterType="int">
+		update airplane set left_seat = left_seat -1 where airplane_no = #{airplane_no}
+	</update>
+	
+	<update id="plusLeftSeat" parameterType="int">
+		update airplane set left_seat = left_seat +1 where airplane_no = #{airplane_no}
+	</update>
+	
+	<select id="getAirplaneData" parameterType="int" resultType="Airplane">
+		select airplane_no, airplane_name, (to_char(departrue_date, 'YYYY-MM-DD')||'T'||to_char(departrue_date, 'HH:MI:SS')) departrue_date, 
+		(to_char(arrival_date, 'YYYY-MM-DD')||'T'||to_char(arrival_date, 'HH:MI:SS')) arrival_date, departrue, arrival, total_seat, price
+		from airplane where airplane_no = #{airplane_no}
+	</select>
+	
+	<update id="updateAirplaneData" parameterType="Airplane">
+		<![CDATA[		
+			update airplane set airplane_name = #{airplane_name}, departrue_date = to_date(replace(#{departrue_date}, 'T', ''), 'YYYY-MM-DDHH:MI:SS'), arrival_date = to_date(replace(#{arrival_date}, 'T', ''), 'YYYY-MM-DDHH:MI:SS'),
+			departrue = #{departrue}, arrival = #{arrival}, total_seat = #{total_seat}, price = #{price} where airplane_no = #{airplane_no}
+		]]>
+	</update>
+	
+	<delete id="deleteAirplaneData" parameterType="int">
+		delete airplane where airplane_no = #{airplane_no}
+	</delete>
+	
 </mapper>

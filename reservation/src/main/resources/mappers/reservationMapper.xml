@@ -3,4 +3,49 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.reservation.dao.ReservationDao"></mapper>
+<mapper namespace="com.example.reservation.dao.ReservationDao">
+
+	<select id="maxNumOfReservation" resultType="int">
+		select nvl(max(reservation_no), 0) from reservation
+	</select>
+
+	<select id="getReservationDataCount" parameterType="int" resultType="int">
+		select nvl(count(*), 0) from reservation where airplane_no = #{airplane_no}
+	</select>
+	
+	<select id="getReservationLists" parameterType="map" resultType="Reservation">
+		select * from(
+			select rownum rnum, data.* from(
+		    select reservation_no, user_name, (to_char(reservation_date, 'YYYY-MM-DD')) reservation_date
+		    from reservation
+		    where airplane_no = #{airplane_no}
+		    order by reservation_no desc
+    		) data
+		) 
+		<![CDATA[
+			where rnum >= #{start} and rnum <= #{end}
+		]]>
+	</select>
+	
+	<insert id="insertReservationData" parameterType="Reservation">
+		insert into reservation values(#{reservation_no}, #{airplane_no}, #{user_name}, #{user_email}, #{user_phone}, sysdate)
+	</insert>
+	
+	<select id="getReadReservationData" parameterType="int" resultType="Reservation">
+		select reservation_no, airplane_no, user_name, user_email, user_phone, to_char(reservation_date, 'YYYY-MM-DD HH:MI:SS') reservation_date
+		from reservation where reservation_no = #{reservation_no}
+	</select>
+	
+	<select id="getAirplaneName" parameterType="int" resultType="String">
+		select airplane_name from airplane where airplane_no = (select airplane_no from reservation where reservation_no = #{reservation_no})
+	</select>
+	
+	<update id="updateReservationData" parameterType="Reservation">
+		update reservation set user_name = #{user_name}, user_email = #{user_email}, user_phone = #{user_phone} where reservation_no = #{reservation_no}
+	</update>
+	
+	<delete id="deleteReservationData" parameterType="int">
+		delete reservation where reservation_no = #{reservation_no}
+	</delete>
+	
+</mapper>

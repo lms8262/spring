@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.example.reservation.dto.Airplane;
+import com.example.reservation.dto.Reservation;
 import com.example.reservation.service.ReservationService;
 import com.example.reservation.util.MyUtil;
 
@@ -61,7 +62,7 @@ public class ReservationController {
 			
 			// 2. 페이징 처리를 한다 (준비 단계)
 			int numPerPage = 5; // 페이지당 보여줄 데이터 수
-			int totalPage = myUtil.getAirplanePageCount(numPerPage, dataCount);
+			int totalPage = myUtil.getPageCount(numPerPage, dataCount);
 			
 			if(currentPage > totalPage) {
 				currentPage = totalPage; // 현재 페이지는 총 페이지 수를 넘어갈 수 없음
@@ -102,7 +103,6 @@ public class ReservationController {
 			model.addAttribute("airplanePageIndexList", airplanePageIndexList); // 버튼
 			model.addAttribute("dataCount", dataCount); // 전체 데이터 리스트
 			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -135,61 +135,386 @@ public class ReservationController {
 
 	// index화면에서 편명 클릭 시 이동하는 항공편 상세 페이지
 	@RequestMapping(value = "/airplane", method = { RequestMethod.GET, RequestMethod.POST })
-	public String airplane(HttpServletRequest request, Model model) {
+	public String airplane(Reservation reservation, HttpServletRequest request, Model model) {
+		try {
+			int airplane_no = Integer.parseInt(request.getParameter("airplane_no"));
+			String pageNum = request.getParameter("pageNum");
+			String pageNum2 = request.getParameter("pageNum2");
+			String searchKey = request.getParameter("searchKey");
+			String searchValue = request.getParameter("searchValue");
+			
+			if (searchValue != null) {
+				searchValue = URLDecoder.decode(searchValue, "UTF-8");
+			}
+			
+			// 비행기 데이터 가져오기
+			Airplane airplane = reservationService.getReadAirplaneData(airplane_no);
+			if(airplane == null) {
+				return "redirect:/index?pageNum=" + pageNum;
+			}
+			
+			String param = "pageNum=" + pageNum;
+			
+			if(searchValue != null && !searchValue.equals("")) {
+				param += "&searchKey=" + searchKey;
+				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8"); // 컴퓨터의 언어로 인코딩
+			}
+			
+			// 예약자 리스트 보여주기
+			int currentPage = 1;
+			
+			if(pageNum2 != null) {
+				currentPage = Integer.parseInt(pageNum2);
+			}
+			
+			if (searchValue == null) {
+				searchKey = "airplane_name"; // 검색 키워드의 디폴트는 airplane_name
+				searchValue = "";
+			} else {
+				if (request.getMethod().equalsIgnoreCase("GET")) {
+					// get 방식으로 request가 왔다면
+					// 쿼리 파라메터의 값(searchValue)을 디코딩해준다.
+					searchValue = URLDecoder.decode(searchValue, "UTF-8");
+				}
+			}
+			
+			// 1. 예약자 수를 가져온다
+			int dataCount = reservationService.getReservationDataCount(airplane_no);
+			
+			// 2. 페이징 처리를 한다 (준비 단계)
+			int numPerPage = 5; // 페이지당 보여줄 데이터의 개수
+			int totalPage = myUtil.getPageCount(numPerPage, dataCount);
+			
+			if (currentPage > totalPage) {
+				currentPage = totalPage; // totalPage보다 크면 안된다
+			}
+			
+			int start = (currentPage - 1) * numPerPage + 1; // 1 6 11...
+			int end = currentPage * numPerPage; // 5 10 15...
+			
+			// 3. 전체 예약자 리스트를 가져온다
+			List<Reservation> lists = reservationService.getReservationLists(airplane_no, start, end);
+			
+			// 4. 페이징 처리를 한다
+			
+			String airplaneUrl = "/airplane?" + param;
+			
+			String reservationPageIndexList = myUtil.reservationPageIndexList(airplane_no ,currentPage, totalPage, airplaneUrl);
+			
+			// 버튼 눌렀을때 상세페이지 주소
+			String reservation_statusUrl = "/reservation_status?pageNum2=" + currentPage + "&airplane_no=" + airplane_no;
+			
+			if(!param.equals("")) { //검색어가 있는 경우
+				reservation_statusUrl += "&" + param;
+			}
+			
+			String param2 = param + "&pageNum2=" + currentPage; 
+			
+			model.addAttribute("airplane", airplane);
+			model.addAttribute("params", param);
+			model.addAttribute("params2", param2);
+			model.addAttribute("lists", lists); // 전체 데이터 리스트
+			model.addAttribute("reservation_statusUrl", reservation_statusUrl); // 상세페이지 url
+			model.addAttribute("reservationPageIndexList", reservationPageIndexList); // 버튼
+			model.addAttribute("dataCount", dataCount); // 전체 데이터 리스트
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return "rss/airplane";
 	}
 
 	// 항공편 수정 페이지
 	@RequestMapping(value = "/updated", method = RequestMethod.GET)
-	public String updated() {
+	public String updated(HttpServletRequest request, Model model) {
+		try {
+			int airplane_no = Integer.parseInt(request.getParameter("airplane_no"));
+			String pageNum = request.getParameter("pageNum");
+			String pageNum2 = request.getParameter("pageNum2");
+			String searchKey = request.getParameter("searchKey");
+			String searchValue = request.getParameter("searchValue");
+			
+			if (searchValue != null) {
+				searchValue = URLDecoder.decode(searchValue, "UTF-8");
+			}
+			
+			Airplane airplane = reservationService.getAirplaneData(airplane_no);
+			
+			if(airplane == null) {
+				return "redirect:/index?pageNum=" + pageNum;
+			}
+			
+			String param = "pageNum=" + pageNum + "&pageNum2=" + pageNum2;
+			
+			if (searchValue != null && !searchValue.equals("")) {
+				// 검색어가 있다면
+				param += "&searchKey=" + searchKey;
+				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8"); // 컴퓨터의 언어로 인코딩
+			}
+			
+			model.addAttribute("airplane", airplane);
+			model.addAttribute("pageNum", pageNum);
+			model.addAttribute("pageNum2", pageNum2);
+			model.addAttribute("params", param);
+			model.addAttribute("searchKey", searchKey);
+			model.addAttribute("searchValue", searchValue);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return "rss/updated";
 	}
 
 	// 항공편 수정
 	@RequestMapping(value = "/updated_ok", method = RequestMethod.POST)
 	public String updatedOK(Airplane airplane, HttpServletRequest request, Model model) {
-		return "redirect:/index";
+		String pageNum = request.getParameter("pageNum");
+		String pageNum2 = request.getParameter("pageNum2");
+		String searchKey = request.getParameter("searchKey");
+		String searchValue = request.getParameter("searchValue");
+		String param = "?pageNum=" + pageNum + "&pageNum2=" + pageNum2 + "&airplane_no=" + airplane.getAirplane_no(); 
+		
+		try {
+			reservationService.updateAirplaneData(airplane);
+			
+			if (searchValue != null && !searchValue.equals("")) {
+				// 검색어가 있다면
+				param += "&searchKey=" + searchKey;
+				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8"); // 컴퓨터의 언어로 인코딩
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/airplane" + param;
 	}
 
 	// 항공편 삭제
 	@RequestMapping(value = "/deleted_airplane_ok", method = RequestMethod.GET)
-	public String deletedAirplaneOK() {
-		return "redirect:/index";
+	public String deletedAirplaneOK(HttpServletRequest request, Model model) {
+		int airplane_no = Integer.parseInt(request.getParameter("airplane_no"));
+		String pageNum = request.getParameter("pageNum");
+		String searchKey = request.getParameter("searchKey");
+		String searchValue = request.getParameter("searchValue");
+		String param = "?pageNum=" + pageNum;
+		
+		try {
+			reservationService.deleteAirplaneData(airplane_no);
+			
+			if (searchValue != null && !searchValue.equals("")) {
+				// 검색어가 있다면
+				param += "&searchKey=" + searchKey;
+				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8"); // 컴퓨터의 언어로 인코딩
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/index" + param;
 	}
 
 	// 예약 정보 입력 페이지 보여주기
 	@RequestMapping(value = "/reservation", method = RequestMethod.GET)
-	public String reservation() {
+	public String reservation(HttpServletRequest request, Model model) {
+		try {
+			int airplane_no = Integer.parseInt(request.getParameter("airplane_no"));
+			String airplane_name = reservationService.getAirplaneName(airplane_no);
+			String pageNum = request.getParameter("pageNum");
+			String pageNum2 = request.getParameter("pageNum2");
+			String searchKey = request.getParameter("searchKey");
+			String searchValue = request.getParameter("searchValue");
+			String param = "pageNum=" + pageNum + "&pageNum2=" + pageNum2;
+			
+			if (searchValue != null) {
+				searchValue = URLDecoder.decode(searchValue, "UTF-8");
+			}
+			
+			if (searchValue != null && !searchValue.equals("")) {
+				// 검색어가 있다면
+				param += "&searchKey=" + searchKey;
+				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8"); // 컴퓨터의 언어로 인코딩
+			}
+			
+			model.addAttribute("airplane_name", airplane_name);
+			model.addAttribute("airplane_no", airplane_no);
+			model.addAttribute("params", param);
+			model.addAttribute("pageNum", pageNum);
+			model.addAttribute("pageNum2", pageNum2);
+			model.addAttribute("searchKey", searchKey);
+			model.addAttribute("searchValue", searchValue);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return "rss/reservation";
 	}
 
 	// 예약
 	@RequestMapping(value = "/reservation", method = RequestMethod.POST)
-	public String reservationOK() {
-		return "redirect:/index";
+	public String reservationOK(Reservation reservation, HttpServletRequest request, Model model) {
+			String pageNum = request.getParameter("pageNum");
+			String pageNum2 = request.getParameter("pageNum2");
+			String searchKey = request.getParameter("searchKey");
+			String searchValue = request.getParameter("searchValue");
+			String param = "?pageNum=" + pageNum + "&pageNum2=" + pageNum2 + "&airplane_no=" + reservation.getAirplane_no();
+			
+		try {
+			int maxNum = reservationService.maxNumOfReservation();
+			
+			reservation.setReservation_no(maxNum + 1);
+			
+			reservationService.insertReservationData(reservation);
+			
+			if (searchValue != null && !searchValue.equals("")) {
+				// 검색어가 있다면
+				param += "&searchKey=" + searchKey;
+				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8"); // 컴퓨터의 언어로 인코딩
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/airplane" + param;
 	}
 
 	// 에약 상세정보 보기
 	@RequestMapping(value = "/reservation_status", method = RequestMethod.GET)
-	public String reservationStatus() {
+	public String reservationStatus(HttpServletRequest request, Model model) {
+		try {
+			int reservation_no = Integer.parseInt(request.getParameter("reservation_no"));
+			int airplane_no = Integer.parseInt(request.getParameter("airplane_no"));
+			String pageNum = request.getParameter("pageNum");
+			String pageNum2 = request.getParameter("pageNum2");
+			String searchKey = request.getParameter("searchKey");
+			String searchValue = request.getParameter("searchValue");
+			
+			if (searchValue != null) {
+				searchValue = URLDecoder.decode(searchValue, "UTF-8");
+			}
+			
+			// 예약정보 가져오기
+			Reservation reservation = reservationService.getReadReservationData(reservation_no);
+			String airplane_name = reservationService.getAirplaneName(reservation_no);
+			if(reservation == null) {
+				return "redirect:/airplane?pageNum=" + pageNum + "&airplane_no=" + airplane_no;
+			}
+			
+			String param = "pageNum=" + pageNum + "&airplane_no=" + airplane_no + "&pageNum2=" + pageNum2;
+			
+			if (searchValue != null && !searchValue.equals("")) {
+				// 검색어가 있다면
+				param += "&searchKey=" + searchKey;
+				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8"); // 컴퓨터의 언어로 인코딩
+			}
+			
+			model.addAttribute("reservation", reservation);
+			model.addAttribute("airplane_name", airplane_name);
+			model.addAttribute("params", param);
+			model.addAttribute("pageNum", pageNum);
+			model.addAttribute("pageNum2", pageNum2);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return "rss/reservation_status";
 	}
 
 	// 예약 정보 수정 페이지 보여주기
 	@RequestMapping(value = "/reservation_updated", method = RequestMethod.GET)
-	public String reservation_updated() {
+	public String reservation_updated(HttpServletRequest request, Model model) {
+		try {
+			int reservation_no = Integer.parseInt(request.getParameter("reservation_no"));
+			int airplane_no = Integer.parseInt(request.getParameter("airplane_no"));
+			String pageNum = request.getParameter("pageNum");
+			String pageNum2 = request.getParameter("pageNum2");
+			String searchKey = request.getParameter("searchKey");
+			String searchValue = request.getParameter("searchValue");
+			
+			if (searchValue != null) {
+				searchValue = URLDecoder.decode(searchValue, "UTF-8");
+			}
+			
+			Reservation reservation = reservationService.getReadReservationData(reservation_no);
+			String airplane_name = reservationService.getAirplaneName(reservation_no);
+			
+			if(reservation == null) {
+				return "redirect:/airplane?airplane_no=" + airplane_no;
+			}
+			
+			String param = "pageNum=" + pageNum + "&pageNum2=" + pageNum2;
+			
+			if (searchValue != null && !searchValue.equals("")) {
+				// 검색어가 있다면
+				param += "&searchKey=" + searchKey;
+				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8"); // 컴퓨터의 언어로 인코딩
+			}
+			
+			model.addAttribute("reservation", reservation);
+			model.addAttribute("airplane_name", airplane_name);
+			model.addAttribute("params", param);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return "rss/reservation_updated";
 	}
 
 	// 예약 정보 수정
 	@RequestMapping(value = "/reservation_updated", method = RequestMethod.POST)
-	public String reservation_updatedOK() {
-		return "redirect:/index";
+	public String reservation_updatedOK(Reservation reservation, HttpServletRequest request, Model model) {
+		String pageNum = request.getParameter("pageNum");
+		String pageNum2 = request.getParameter("pageNum2");
+		String searchKey = request.getParameter("searchKey");
+		String searchValue = request.getParameter("searchValue");
+		
+		String param = "?pageNum=" + pageNum + "&pageNum2=" + pageNum2 + "&airplane_no=" + reservation.getAirplane_no() + "&reservation_no=" + reservation.getReservation_no();
+		
+		try {
+			reservationService.updateReservationData(reservation);
+			
+			if (searchValue != null && !searchValue.equals("")) {
+				// 검색어가 있다면
+				param += "&searchKey=" + searchKey;
+				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8"); // 컴퓨터의 언어로 인코딩
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/reservation_status" + param;
 	}
 
-	// 예약 취소
+	// 예약 취소(삭제)
 	@RequestMapping(value = "/deleted_reservation_ok", method = RequestMethod.GET)
-	public String deletedReservationOK() {
-		return "redirect:/index";
+	public String deletedReservationOK(HttpServletRequest request, Model model) {
+		int reservation_no = Integer.parseInt(request.getParameter("reservation_no"));
+		int airplane_no = Integer.parseInt(request.getParameter("airplane_no"));
+		String pageNum = request.getParameter("pageNum");
+		String pageNum2 = request.getParameter("pageNum2");
+		String searchKey = request.getParameter("searchKey");
+		String searchValue = request.getParameter("searchValue");
+		String param = "?pageNum=" + pageNum + "&pageNum2=" + pageNum2 + "&airplane_no=" + airplane_no;
+		
+		try {
+			reservationService.deleteReservationData(reservation_no);
+			
+			if (searchValue != null && !searchValue.equals("")) {
+				// 검색어가 있다면
+				param += "&searchKey=" + searchKey;
+				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8"); // 컴퓨터의 언어로 인코딩
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:/airplane" + param;
 	}
 }
