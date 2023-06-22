@@ -2,11 +2,15 @@ package com.example.reservation.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.example.reservation.dto.Airplane;
 import com.example.reservation.service.ReservationService;
 import com.example.reservation.util.MyUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class ReservationController {
@@ -36,13 +40,13 @@ public class ReservationController {
 
 	// 항공편 등록
 	@RequestMapping(value = "/created", method = RequestMethod.POST)
-	public String createdOK() {
+	public String createdOK(Airplane airplane, HttpServletRequest request, Model model) {
 		return "redirect:/index";
 	}
 
 	// index화면에서 편명 클릭 시 이동하는 항공편 상세 페이지
 	@RequestMapping(value = "/airplane", method = RequestMethod.GET)
-	public String airplane() {
+	public String airplane(HttpServletRequest request, Model model) {
 		return "rss/airplane";
 	}
 
@@ -54,7 +58,7 @@ public class ReservationController {
 
 	// 항공편 수정
 	@RequestMapping(value = "/updated_ok", method = RequestMethod.POST)
-	public String updatedOK() {
+	public String updatedOK(Airplane airplane, HttpServletRequest request, Model model) {
 		return "redirect:/index";
 	}
 
@@ -71,7 +75,7 @@ public class ReservationController {
 	}
 
 	// 예약
-	@RequestMapping(value = "/reservation_ok", method = RequestMethod.POST)
+	@RequestMapping(value = "/reservation", method = RequestMethod.POST)
 	public String reservationOK() {
 		return "redirect:/index";
 	}
@@ -89,7 +93,7 @@ public class ReservationController {
 	}
 
 	// 예약 정보 수정
-	@RequestMapping(value = "/reservation_updated_ok", method = RequestMethod.POST)
+	@RequestMapping(value = "/reservation_updated", method = RequestMethod.POST)
 	public String reservation_updatedOK() {
 		return "redirect:/index";
 	}

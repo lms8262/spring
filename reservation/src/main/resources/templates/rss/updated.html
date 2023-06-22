@@ -32,23 +32,93 @@
 			</div>
 			<div class="col-md-6">
 				<label for="total_seat	" class="form-label">총 좌석수</label>
-				<input type="number" class="form-control" id="total_seat" name="total_seat" min="0" />
+				<input type="number" class="form-control" id="total_seat" name="total_seat" min="0" numberOnly />
 			</div>
 			<div class="col-md-6">
 				<label for="price" class="form-label">가격</label>
-				<input type="number" class="form-control" id="price" name="price" min="0" />
+				<input type="number" class="form-control" id="price" name="price" min="0" numberOnly />
 			</div>
 		</div>
 		<div id="created_footer">
-			<input type="button" value=" 수정하기 " class="btn btn-primary" />
-			<input type="button" value=" 작성취소 " class="btn btn-danger" onclick="javascript:location.href='/index';" />
+			<input type="button" value=" 수정하기 " class="btn btn-primary" onclick="sendIt();" />
+			<input type="button" value=" 수정취소 " class="btn btn-danger" onclick="javascript:location.href='/index';" />
 		</div>
 	</form>
 </div>
 
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
+		// 특정 input창 숫자만 입력받기
+		$(document).on("keyup", "input[numberOnly]", function() {$(this).val( $(this).val().replace(/[^0-9]/gi,"") );})
 		
+		function sendIt() {
+			var f = document.myForm; // 폼 태그
+			
+			var str = f.airplane_name.value; // 편명
+			str = str.trim(); // 앞 뒤 공백 제거
+			
+			if(!str) {
+				alert("편명을 입력하세요.");
+				f.airplane_name.focus();
+				return;
+			}
+			
+			str = f.departrue_date.value;
+			str = str.trim();
+			
+			if(!str) {
+				alert("출발일시를 입력하세요.");
+				f.departrue_date.focus();
+				return;
+			}
+			
+			str = f.arrival_date.value;
+			str = str.trim();
+			
+			if(!str) {
+				alert("도착일시를 입력하세요.");
+				f.arrival_date.focus();
+				return;
+			}
+			
+			str = f.departrue.value;
+			str = str.trim();
+			
+			if(!str) {
+				alert("출발지를 입력하세요.");
+				f.departrue.focus();
+				return;
+			}
+			
+			str = f.arrival.value;
+			str = str.trim();
+			
+			if(!str) {
+				alert("도착지를 입력하세요.");
+				f.arrival.focus();
+				return;
+			}
+			
+			str = f.total_seat.value;
+			str = str.trim();
+			
+			if(!str) {
+				alert("총 좌석수를 입력하세요.");
+				f.total_seat.focus();
+				return;
+			}
+			
+			str = f.price.value;
+			str = str.trim();
+			
+			if(!str) {
+				alert("가격을 입력하세요.");
+				f.price.focus();
+				return;
+			}
+			
+			f.submit();
+		}
 	</script>
 </th:block>
 

@@ -24,13 +24,13 @@ user_email	예약자 이메일	varchar2		String
 user_phone	예약자 전화번호	varchar2		String
 reservation_date	예약일자		date		String(등록시엔 sysdate, 불러올땐 to_char)
 
-index		항공 목록이 보이는 메인 페이지(항공편 등록(created), 검색기능, 페이징)
-created		항공편 등록 페이지(등록, 뒤로가기)
-airplane		index화면에서 편명 클릭시 이동하는 페이지(수정하기(updated), 삭제하기, 예약하기(reservation), 예약 회원 리스트(페이징), 뒤로가기)
-updated		항공편 수정 페이지(수정, 취소)
-reservation	항공편 예약하는 페이지(예약, 뒤로가기)
-reservation_status	예약 회원 이름 클릭시 보여주는 페이지(예약 수정, 예약 취소, 뒤로가기)
-reservation_updated 예약 정보 수정하기(수정, 취소)
+index		항공 목록이 보이는 메인 페이지(항공편 등록(created), 검색기능, 페이징)	ㅇ
+created		항공편 등록 페이지(등록, 뒤로가기)					ㅇ
+airplane		index화면에서 편명 클릭시 이동하는 페이지(수정하기(updated), 삭제하기, 예약하기(reservation), 예약 회원 리스트(페이징), 뒤로가기)	ㅇ
+updated		항공편 수정 페이지(수정, 취소)	ㅇ
+reservation	항공편 예약하는 페이지(예약, 뒤로가기)	ㅇ
+reservation_status	예약 회원 이름 클릭시 보여주는 페이지(예약 수정, 예약 취소, 뒤로가기)	ㅇ
+reservation_updated 예약 정보 수정하기(수정, 취소)	ㅇ
 
 input type="datetime-local" 형식
 YYYY-MM-DDThh:mm

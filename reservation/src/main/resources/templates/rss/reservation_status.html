@@ -3,7 +3,38 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout}">
 
-<div layout:fragment="content"></div>
+<th:block layout:fragment="css">
+	<link rel="stylesheet" type="text/css" href="css/airplane.css" />
+</th:block>
+
+<div layout:fragment="content">
+	<div class="row">
+	<div class="col-3"></div>
+	<div class="card airplane_content col-6">
+		<div class="card-body">
+			<h3 class="card-title">예약 현황</h3>
+			<p class="card-text">
+			<b>편명:</b> 입력
+			<br>
+			<b>예약자명:</b> 입력
+			<br>
+			<b>이메일:</b> 입력
+			<br>
+			<b>전화번호:</b> 입력
+			<br>
+			<b>예약일자:</b> 입력
+			</p>
+		</div>
+	<div class="col-3"></div>
+	</div>
+	</div>
+	
+	<div class="airplane_buttons">
+				<input type="button" value=" 예약수정 " class="btn btn-primary" onclick="javascript:location.href='/reservation_updated';" />
+				<input type="button" value=" 예약취소 " class="btn btn-danger" onclick="javascript:location.href='/deleted_reservation_ok';" />
+				<input type="button" value=" 목록으로 " class="btn btn-primary" onclick="javascript:location.href='/index';" />
+	</div>
+</div>
 
 <th:block layout:fragment="script"></th:block>
 
