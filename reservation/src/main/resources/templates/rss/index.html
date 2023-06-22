@@ -10,15 +10,15 @@
 <div layout:fragment="content">
 	<div id="index_header">
 		<div id="leftHeader">
-			<form action="/list" method="post" name="searchForm">
+			<form action="/index" method="post" name="searchForm">
 				<select name="searchKey" class="form-select"
-					aria-label="Default select example">
+					aria-label="Default select">
 					<option value="airplane_name">편명</option>
 					<option value="departrue">출발지</option>
 					<option value="arrival">도착지</option>
 				</select>
 				<input class="form-control" type="text" aria-label="default input example" name="searchValue" />
-				<input type="button" value=" 검 색 " class="btn btn-primary btn-sm" />
+				<input type="button" value=" 검 색 " class="btn btn-primary btn-sm" onclick="sendIt();" />
 			</form>
 		</div>
 		<div id="rightHeader">
@@ -37,26 +37,26 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td scope="row">1</td>
-				<td>12222222222222222</td>
-				<td>1</td>
-				<td>1</td>
-				<td>1</td>
+			<tr th:if="${#lists.size(lists)} > 0" th:each="airplane:${lists}">
+				<td scope="row" th:text="${airplane.airplane_no}"></td>
+				<td>
+					<a class="airplane_name" th:href="|@{${airplaneUrl}}&airplane_no=@{${airplane.airplane_no}}|" th:text="${airplane.airplane_name}"></a>
+				</td>
+				<td th:text="${airplane.departrue}"></td>
+				<td th:text="${airplane.arrival}"></td>
+				<td th:text="${airplane.price}"></td>
 			</tr>
 		</tbody>
 	</table>
 	
-	<nav aria-label="Page navigation">
-		<ul class="pagination page_buttons">
-			<li class="page-item">
-				<a class="page-link active" href="#">1</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="#">2</a>
-			</li>
-		</ul>
+	<nav aria-label="Page navigation" th:if="${#lists.size(dataCount)} > 0">
+		<ul class="pagination page_buttons" th:utext="${airplanePageIndexList}"></ul>
 	</nav>
+	
+	<nav th:if="${#lists.size(dataCount) <= 0}">
+		<ul><li>등록된 게시물이 없습니다.</li></ul>
+	</nav>
+	
 </div>
 
 <th:block layout:fragment="script">

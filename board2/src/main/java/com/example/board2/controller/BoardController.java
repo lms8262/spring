@@ -116,7 +116,7 @@ public class BoardController {
 				listUrl += "?" + param;
 			}
 
-			String pageIndexList = myUtil.pageIntdexList(currentPage, totalPage, listUrl);
+			String pageIndexList = myUtil.pageIndexList(currentPage, totalPage, listUrl);
 
 			String articleUrl = "/article?pageNum=" + currentPage;
 

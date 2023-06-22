@@ -3,4 +3,34 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.reservation.dao.AirplaneDao"></mapper>
+<mapper namespace="com.example.reservation.dao.AirplaneDao">
+	
+	<select id="maxNumOfAirplane" resultType="int">
+		select nvl(max(airplane_no), 0) from airplane
+	</select>
+	
+	<select id="getAirplaneDataCount" parameterType="map" resultType="int">
+		select nvl(count(*), 0) from airplane where ${searchKey} like '%' || #{searchValue} || '%'
+	</select>
+	
+	<select id="getAirplaneLists" parameterType="map" resultType="Airplane">
+		select * from (
+	    	select rownum rnum, data.* from(
+		        select airplane_no, airplane_name, departrue, arrival, price
+		        from airplane
+		        where ${searchKey} like '%' || #{searchValue} || '%'
+	    		order by airplane_no desc
+	    	) data
+		) 
+		<![CDATA[		
+			where rnum >= #{start} and rnum <= #{end}
+		]]>
+	</select>
+	
+	<insert id="insertAirplaneData" parameterType="Airplane">
+		<![CDATA[		
+			insert into airplane values(#{airplane_no}, #{airplane_name}, to_date(replace(#{departrue_date}, 'T', ''), 'YYYY-MM-DDHH24:MI:SS'), to_date(replace(#{arrival_date}, 'T', ''), 'YYYY-MM-DDHH24:MI:SS'), #{departrue}, #{arrival}, #{total_seat}, #{total_seat}, #{price})
+		]]>
+	</insert>
+	
+</mapper>

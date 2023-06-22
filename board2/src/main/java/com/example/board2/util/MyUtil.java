@@ -16,7 +16,7 @@ public class MyUtil {
 		return pageCount;
 	}
 
-	public String pageIntdexList(int currentPage, int totalPage, String listUrl) {
+	public String pageIndexList(int currentPage, int totalPage, String listUrl) {
 		// 문자열 데이터를 자주 추가하거나 삭제할때는 메모리 낭비의 방지를 위해 StringBuffer를 사용한다
 		StringBuffer sb = new StringBuffer();
 		int numPerBlock = 5; // ◀이전 6 7 8 9 10 다음▶ 이전과 다음 사이의 숫자를 몇개를 표시할지

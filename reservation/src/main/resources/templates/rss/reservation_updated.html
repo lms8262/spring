@@ -45,7 +45,7 @@
 			
 			if(!str) {
 				alert("이름을 입력하세요");
-				f.user_name.foucs();
+				f.user_name.focus();
 				return;
 			}
 			
@@ -55,12 +55,12 @@
 			if(str) {
 				if(!isValidEmail(str)) {
 					alert("이메일은 a@a.a형식으로 입력해주세요.");
-					f.user_email.foucs();
+					f.user_email.focus();
 					return;
 				}
 			} else {
 				alert("이메일을 입력하세요");
-				f.user_email.foucs();
+				f.user_email.focus();
 				return;
 			}
 			
@@ -70,12 +70,12 @@
 			if(str) {
 				if(!isValidPhone(str)) {
 					alert("전화번호는 000-0000-0000형식으로 입력해주세요.");
-					f.user_phone.foucs();
+					f.user_phone.focus();
 					return;
 				}
 			} else {
 				alert("전화번호를 입력하세요");
-				f.user_phone.foucs();
+				f.user_phone.focus();
 				return;
 			}
 			

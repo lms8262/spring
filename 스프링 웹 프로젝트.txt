@@ -6,14 +6,14 @@
 비행기 테이블
 airplane
 airplane_no 	비행기번호 p키	number		int
-airplane_name 	편명		varchar2		String	ㅇ
-departrue_date 	출발일시		date		String	ㅇ
-arrival_date 	도착일시		date		String	ㅇ
-departrue 	출발지		varchar2		String	ㅇ
-arrival 		도착지		varchar2		String	ㅇ
-left_seat		남은 좌석 수	number		int
-total_seat		총 좌석수		number		int	ㅇ
-price		가격		number		int	ㅇ
+airplane_name 	편명		varchar2		String
+departrue_date 	출발일시		date		String
+arrival_date 	도착일시		date		String
+departrue 	출발지		varchar2		String
+arrival 		도착지		varchar2		String
+left_seat		남은 좌석 수	number		int(등록시엔 총 좌석수와 같음)
+total_seat		총 좌석 수	number		int
+price		가격		number		int
 
 예약 테이블
 reservation
