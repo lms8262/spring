@@ -58,7 +58,7 @@ public class MyUtil {
 		
 		// 3. 다음▶ 버튼 만들기
 		if(totalPage - currentPageSetup > numPerBlock) {
-			sb.append("<li class=\"page-item\"><a class=\"page-link\" href=\"" + indexUrl + "pageNum=" + currentPageSetup + "\">→</a></li>");
+			sb.append("<li class=\"page-item\"><a class=\"page-link\" href=\"" + indexUrl + "pageNum=" + page + "\">→</a></li>");
 		}
 		
 		// 4. 버튼 합쳐서 문자열로 리턴
@@ -108,7 +108,7 @@ public class MyUtil {
 		
 		// 3. 다음▶ 버튼 만들기
 		if(totalPage - currentPageSetup > numPerBlock) {
-			sb.append("<li class=\"page-item\"><a class=\"page-link\" href=\"" + airplaneUrl + "&pageNum2=" + currentPageSetup + "&airplane_no=" + airplane_no + "\">→</a></li>");
+			sb.append("<li class=\"page-item\"><a class=\"page-link\" href=\"" + airplaneUrl + "&pageNum2=" + page + "&airplane_no=" + airplane_no + "\">→</a></li>");
 		}
 		
 		// 4. 버튼 합쳐서 문자열로 리턴

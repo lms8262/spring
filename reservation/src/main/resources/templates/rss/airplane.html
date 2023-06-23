@@ -33,8 +33,8 @@
 	
 	<div class="airplane_buttons">
 		<input type="button" value=" 정보수정 " class="btn btn-primary" th:onclick="|location.href='updated?airplane_no=@{${airplane.airplane_no}}&@{${params2}}'|" />
-		<input type="button" value=" 삭제 " class="btn btn-danger" th:onclick="|location.href='deleted_airplane_ok?airplane_no=@{${airplane.airplane_no}}&@{${params2}}'|" />
-		<input type="button" value=" 예약 " class="btn btn-primary" th:onclick="|location.href='reservation?airplane_no=@{${airplane.airplane_no}}&@{${params2}}'|" />
+		<input type="button" value=" 삭제 " class="btn btn-danger" th:onclick="deleteCheck();" />
+		<input type="button" value=" 예약 " class="btn btn-primary" th:onclick="|location.href='reservation?airplane_no=@{${airplane.airplane_no}}&@{${params2}}&airplane_name=@{${airplane_name}}'|" />
 		<input type="button" value=" 목록으로 " class="btn btn-primary" th:onclick="|location.href='index?@{${params}}'|" />
 	</div>
 	
@@ -67,6 +67,24 @@
 	
 </div>
 
-<th:block layout:fragment="script"></th:block>
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+		var errorMessage = [[${errorMessage}]];
+		if(errorMessage != null) {
+			alert(errorMessage);
+		}
+		
+		function deleteCheck() {
+			const result = confirm("삭제하시겠습니까?");
+			if(result) {
+				const url = location.origin;
+				location.href = url + "/deleted_airplane_ok?airplane_no=" + [[${airplane.airplane_no}]] + "&" + [[${params2}]];
+			} else {
+				return false;
+			}
+		}
+				
+	</script>
+</th:block>
 
 </html>

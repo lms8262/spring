@@ -32,11 +32,15 @@ public class ReservationController {
 	}
 
 	// 항공편 목록이 보이는 메인 페이지
+	// 메인화면, 검색, created페이지 등록하기 및 작성취소 버튼, airplane페이지 삭제 및 목록으로 버튼
 	@RequestMapping(value = "/index", method = { RequestMethod.GET, RequestMethod.POST })
 	public String index(Airplane airplane, HttpServletRequest request, Model model) {
 
 		try {
 			String pageNum = request.getParameter("pageNum");
+			if(pageNum == null) {
+				pageNum = "1"; // 디폴트 값
+			}
 			int currentPage = 1;
 
 			if (pageNum != null) {
@@ -98,25 +102,53 @@ public class ReservationController {
 				airplaneUrl += "&" + param;
 			}
 			
+			String createdUrl = "/created?pageNum=" + pageNum;
+			
+			if(!param.equals("")) {
+				createdUrl += "&" + param;
+			}
+			
 			model.addAttribute("lists", lists); // 전체 데이터 리스트
 			model.addAttribute("airplaneUrl", airplaneUrl); // 상세페이지 url
 			model.addAttribute("airplanePageIndexList", airplanePageIndexList); // 버튼
 			model.addAttribute("dataCount", dataCount); // 전체 데이터 리스트
+			model.addAttribute("createdUrl", createdUrl);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			model.addAttribute("errorMessage", "항공편 리스트를 불러오는 중 에러가 발생했습니다.");
 		}
 
 		return "rss/index";
 	}
 
 	// 항공편 등록 페이지 보여주기
+	// index페이지 항공편 등록 버튼
 	@RequestMapping(value = "/created", method = RequestMethod.GET)
-	public String created() {
+	public String created(HttpServletRequest request, Model model) {
+		String pageNum = request.getParameter("pageNum");
+		String searchKey = request.getParameter("searchKey");
+		String searchValue = request.getParameter("searchValue");
+		String param = "?pageNum=" + pageNum;
+		try {
+			
+			if(searchValue != null && !searchValue.equals("")) {
+				param += "&searchKey=" + searchKey;
+				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8"); // 컴퓨터의 언어로 인코딩
+			}
+			
+			model.addAttribute("params", param);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "항공편 등록 페이지를 불러오는 중 에러가 발생했습니다.");
+			return "rss/index";
+		}
+		
 		return "rss/created";
 	}
 
 	// 항공편 등록
+	// created페이지 등록하기 버튼
 	@RequestMapping(value = "/created", method = RequestMethod.POST)
 	public String createdOK(Airplane airplane, HttpServletRequest request, Model model) {
 		try {
@@ -128,12 +160,15 @@ public class ReservationController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			model.addAttribute("errorMessage", "항공편 등록 중 에러가 발생했습니다.");
+			return "rss/created";
 		}
 		
 		return "redirect:/index";
 	}
 
 	// index화면에서 편명 클릭 시 이동하는 항공편 상세 페이지
+	// index페이지 편명 클릭, updated페이지 수정취소 버튼, reservation페이지 작성취소 버튼
 	@RequestMapping(value = "/airplane", method = { RequestMethod.GET, RequestMethod.POST })
 	public String airplane(Reservation reservation, HttpServletRequest request, Model model) {
 		try {
@@ -210,6 +245,9 @@ public class ReservationController {
 			
 			String param2 = param + "&pageNum2=" + currentPage; 
 			
+			String airplane_name = airplane.getAirplane_name();
+			
+			model.addAttribute("airplane_name", airplane_name);
 			model.addAttribute("airplane", airplane);
 			model.addAttribute("params", param);
 			model.addAttribute("params2", param2);
@@ -220,6 +258,8 @@ public class ReservationController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			model.addAttribute("errorMessage", "항공편 정보와 예약정보 리스트를 불러오는 중 에러가 발생했습니다.");
+			return "rss/index";
 		}
 		
 		return "rss/airplane";
@@ -262,6 +302,7 @@ public class ReservationController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			model.addAttribute("errorMessage", "항공편 정보 수정 페이지를 불러오는 중 에러가 발생했습니다.");
 		}
 		return "rss/updated";
 	}
@@ -286,6 +327,8 @@ public class ReservationController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			model.addAttribute("errorMessage", "항공편 정보를 수정하는 중 에러가 발생했습니다.");
+			return "rss/index";
 		}
 		
 		return "redirect:/airplane" + param;
@@ -321,7 +364,7 @@ public class ReservationController {
 	public String reservation(HttpServletRequest request, Model model) {
 		try {
 			int airplane_no = Integer.parseInt(request.getParameter("airplane_no"));
-			String airplane_name = reservationService.getAirplaneName(airplane_no);
+			String airplane_name = request.getParameter("airplane_name");
 			String pageNum = request.getParameter("pageNum");
 			String pageNum2 = request.getParameter("pageNum2");
 			String searchKey = request.getParameter("searchKey");
@@ -458,6 +501,10 @@ public class ReservationController {
 			model.addAttribute("reservation", reservation);
 			model.addAttribute("airplane_name", airplane_name);
 			model.addAttribute("params", param);
+			model.addAttribute("pageNum", pageNum);
+			model.addAttribute("pageNum2", pageNum2);
+			model.addAttribute("searchKey", searchKey);
+			model.addAttribute("searchValue", searchValue);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

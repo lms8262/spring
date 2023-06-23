@@ -31,11 +31,33 @@
 	
 	<div class="airplane_buttons">
 		<input type="button" value=" 예약수정 " class="btn btn-primary" th:onclick="|location.href='reservation_updated?reservation_no=@{${reservation.reservation_no}}&@{${params}}'|" />
-		<input type="button" value=" 예약취소 " class="btn btn-danger" th:onclick="|location.href='deleted_reservation_ok?reservation_no=@{${reservation.reservation_no}}&@{${params}}'|" />
+		<input type="button" value=" 예약취소 " class="btn btn-danger" th:onclick="deleteCheck();" />
 		<input type="button" value=" 돌아가기 " class="btn btn-primary" th:onclick="|location.href='airplane?@{${params}}'|" />
 	</div>
 </div>
 
-<th:block layout:fragment="script"></th:block>
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+		function updateCheck() {
+			const result = confirm("수정하시겠습니까?");
+			if(result) {
+				const url = location.origin;
+				location.href = url + "/reservation_updated?reservation_no=" + [[${reservation.reservation_no}]] + "&" + [[${params}]];
+			} else {
+				return false;
+			}
+		}
+	
+		function deleteCheck() {
+			const result = confirm("삭제하시겠습니까?");
+			if(result) {
+				const url = location.origin;
+				location.href = url + "/deleted_reservation_ok?reservation_no=" + [[${reservation.reservation_no}]] + "&" + [[${params}]];
+			} else {
+				return false;
+			}
+		}
+	</script>
+</th:block>
 
 </html>

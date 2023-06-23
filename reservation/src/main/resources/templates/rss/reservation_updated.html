@@ -90,7 +90,13 @@
 				return;
 			}
 			
-			f.submit();
+			const result = confirm("수정하시겠습니까?");
+			if(result) {
+				f.submit();				
+			} else {
+				return false;
+			}
+			
 		}
 	</script>
 </th:block>
