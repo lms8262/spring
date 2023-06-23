@@ -266,6 +266,7 @@ public class ReservationController {
 	}
 
 	// 항공편 수정 페이지
+	// airplane페이지 정보수정 버튼
 	@RequestMapping(value = "/updated", method = RequestMethod.GET)
 	public String updated(HttpServletRequest request, Model model) {
 		try {
@@ -308,6 +309,7 @@ public class ReservationController {
 	}
 
 	// 항공편 수정
+	// updated페이지 수정하기 버튼
 	@RequestMapping(value = "/updated_ok", method = RequestMethod.POST)
 	public String updatedOK(Airplane airplane, HttpServletRequest request, Model model) {
 		String pageNum = request.getParameter("pageNum");
@@ -335,6 +337,7 @@ public class ReservationController {
 	}
 
 	// 항공편 삭제
+	// airplane페이지 삭제 버튼
 	@RequestMapping(value = "/deleted_airplane_ok", method = RequestMethod.GET)
 	public String deletedAirplaneOK(HttpServletRequest request, Model model) {
 		int airplane_no = Integer.parseInt(request.getParameter("airplane_no"));
@@ -354,12 +357,15 @@ public class ReservationController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			model.addAttribute("errorMessage", "항공편을 삭제하는 중 에러가 발생했습니다.");
+			return "rss/index";
 		}
 		
 		return "redirect:/index" + param;
 	}
 
 	// 예약 정보 입력 페이지 보여주기
+	// airplane페이지 예약버튼
 	@RequestMapping(value = "/reservation", method = RequestMethod.GET)
 	public String reservation(HttpServletRequest request, Model model) {
 		try {
@@ -391,12 +397,15 @@ public class ReservationController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			model.addAttribute("errorMessage", "예약 정보 입력 페이지를 불러오는 중 에러가 발생했습니다.");
+			return "rss/index";
 		}
 		
 		return "rss/reservation";
 	}
 
 	// 예약
+	// reservation페이지 예약하기 버튼
 	@RequestMapping(value = "/reservation", method = RequestMethod.POST)
 	public String reservationOK(Reservation reservation, HttpServletRequest request, Model model) {
 			String pageNum = request.getParameter("pageNum");
@@ -420,12 +429,15 @@ public class ReservationController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			model.addAttribute("errorMessage", "예약 중에 에러가 발생했습니다.");
+			return "rss/index";
 		}
 		
 		return "redirect:/airplane" + param;
 	}
 
 	// 에약 상세정보 보기
+	// airplane페이지 예약자명 클릭, reservation_updated 돌아가기
 	@RequestMapping(value = "/reservation_status", method = RequestMethod.GET)
 	public String reservationStatus(HttpServletRequest request, Model model) {
 		try {
@@ -463,12 +475,15 @@ public class ReservationController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			model.addAttribute("errorMessage", "예약 상세정보를 불러오는 중에 에러가 발생했습니다.");
+			return "rss/index";
 		}
 		
 		return "rss/reservation_status";
 	}
 
 	// 예약 정보 수정 페이지 보여주기
+	// reservation_status페이지 예약수정 버튼
 	@RequestMapping(value = "/reservation_updated", method = RequestMethod.GET)
 	public String reservation_updated(HttpServletRequest request, Model model) {
 		try {
@@ -508,12 +523,15 @@ public class ReservationController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			model.addAttribute("errorMessage", "예약 수정 페이지를 불러오는 중에 에러가 발생했습니다.");
+			return "rss/index";
 		}
 		
 		return "rss/reservation_updated";
 	}
 
 	// 예약 정보 수정
+	// reservation_updated페이지 수정하기 버튼
 	@RequestMapping(value = "/reservation_updated", method = RequestMethod.POST)
 	public String reservation_updatedOK(Reservation reservation, HttpServletRequest request, Model model) {
 		String pageNum = request.getParameter("pageNum");
@@ -534,12 +552,15 @@ public class ReservationController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			model.addAttribute("errorMessage", "예약 정보를 수정하는 중에 에러가 발생했습니다.");
+			return "rss/index";
 		}
 		
 		return "redirect:/reservation_status" + param;
 	}
 
 	// 예약 취소(삭제)
+	// reservation_status페이지 예약취소 버튼
 	@RequestMapping(value = "/deleted_reservation_ok", method = RequestMethod.GET)
 	public String deletedReservationOK(HttpServletRequest request, Model model) {
 		int reservation_no = Integer.parseInt(request.getParameter("reservation_no"));
@@ -561,6 +582,8 @@ public class ReservationController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			model.addAttribute("errorMessage", "예약을 취소하는 중에 에러가 발생했습니다.");
+			return "rss/index";
 		}
 		return "redirect:/airplane" + param;
 	}

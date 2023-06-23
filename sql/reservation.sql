@@ -47,6 +47,9 @@ commit;
 
 
 
+
+
+
 -- 이 아래부턴 참고용
 -- 예약 번호로 비행기 이름 찾기
 select airplane_name from airplane where airplane_no = (select airplane_no from reservation where reservation_no = 1);

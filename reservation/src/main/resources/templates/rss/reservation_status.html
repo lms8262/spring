@@ -38,6 +38,11 @@
 
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
+		var errorMessage = [[${errorMessage}]];
+		if(errorMessage != null) {
+			alert(errorMessage);
+		}
+	
 		function updateCheck() {
 			const result = confirm("수정하시겠습니까?");
 			if(result) {

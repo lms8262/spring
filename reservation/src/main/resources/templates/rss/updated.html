@@ -58,6 +58,11 @@
 
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
+		var errorMessage = [[${errorMessage}]];
+		if(errorMessage != null) {
+			alert(errorMessage);
+		}
+	
 		// 특정 input창 숫자만 입력받기
 		$(document).on("keyup", "input[numberOnly]", function() {$(this).val( $(this).val().replace(/[^0-9]/gi,"") );})
 		
