@@ -198,6 +198,9 @@ public class ReservationController {
 			// 예약자 리스트 보여주기
 			int currentPage = 1;
 			
+			if(pageNum2 == null) {
+				pageNum2 = "1"; // 디폴트 값
+			}
 			if(pageNum2 != null) {
 				currentPage = Integer.parseInt(pageNum2);
 			}
@@ -243,7 +246,7 @@ public class ReservationController {
 				reservation_statusUrl += "&" + param;
 			}
 			
-			String param2 = param + "&pageNum2=" + currentPage; 
+			String param2 = param + "&pageNum2=" + pageNum2; 
 			
 			String airplane_name = airplane.getAirplane_name();
 			
