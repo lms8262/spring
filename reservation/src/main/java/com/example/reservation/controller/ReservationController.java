@@ -188,10 +188,10 @@ public class ReservationController {
 				return "redirect:/index?pageNum=" + pageNum;
 			}
 			
-			String param = "pageNum=" + pageNum;
+			String param = "";
 			
 			if(searchValue != null && !searchValue.equals("")) {
-				param += "&searchKey=" + searchKey;
+				param = "searchKey=" + searchKey;
 				param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8"); // 컴퓨터의 언어로 인코딩
 			}
 			
@@ -235,18 +235,34 @@ public class ReservationController {
 			
 			// 4. 페이징 처리를 한다
 			
-			String airplaneUrl = "/airplane?" + param;
+			String airplaneUrl = "/airplane?pageNum=" + pageNum;
+			
+			if(!param.equals("")) { //검색어가 있는 경우
+				airplaneUrl += "&" + param;
+			}
 			
 			String reservationPageIndexList = myUtil.reservationPageIndexList(airplane_no ,currentPage, totalPage, airplaneUrl);
 			
 			// 버튼 눌렀을때 상세페이지 주소
-			String reservation_statusUrl = "/reservation_status?pageNum2=" + currentPage + "&airplane_no=" + airplane_no;
+			String reservation_statusUrl = "/reservation_status?pageNum=" + pageNum + "&pageNum2=" + currentPage + "&airplane_no=" + airplane_no;
 			
 			if(!param.equals("")) { //검색어가 있는 경우
 				reservation_statusUrl += "&" + param;
 			}
 			
-			String param2 = param + "&pageNum2=" + pageNum2; 
+			String param2 = "pageNum=" + pageNum; 
+			
+			if(!param.equals("")) { //검색어가 있는 경우
+				param2 += "&" + param;
+			}
+			
+			param2 += "&pageNum2=" + pageNum2;
+			
+			if(!param.equals("")) {
+				param += "&pageNum=" + pageNum; 
+			} else {
+				param = "pageNum=" + pageNum;
+			}
 			
 			String airplane_name = airplane.getAirplane_name();
 			
