@@ -28,12 +28,10 @@ public class SecurityConfig {
 						.loginPage("/members/login") // 로그인 페이지 URL 설정
 						.defaultSuccessUrl("/") // 로그인 성공시 이동할 페이지
 						.usernameParameter("email") // 로그인 시 id로 사용할 파라메터 이름
-						.failureUrl("/members/login/error") // 로그인 실패시 이동할 URL
-						.permitAll())
+						.failureUrl("/members/login/error")) // 로그인 실패시 이동할 URL
 				.logout(logout -> logout // 3. 로그아웃에 관련된 설정
 						.logoutRequestMatcher(new AntPathRequestMatcher("/members/logout")) // 로그아웃시 이동할 URL
-						.logoutSuccessUrl("/") // 로그아웃 성공시 이동할 URL
-						.permitAll())
+						.logoutSuccessUrl("/")) // 로그아웃 성공시 이동할 URL
 				.exceptionHandling(handling -> handling // 4. 인증되지 않은 사용자가 리소스에 접근했을때 설정(ex. 로그인 안했는데 cart페이지에 접근...)
 						.authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
 				.rememberMe(Customizer.withDefaults());
