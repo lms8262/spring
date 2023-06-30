@@ -54,7 +54,8 @@ public class Member {
 		member.setEmail(memberFormDto.getEmail());
 		member.setAddress(memberFormDto.getAddress());
 		member.setPassword(password);
-		member.setRole(Role.ADMIN);
+		// member.setRole(Role.ADMIN); // 관리자로 가입 할때
+		member.setRole(Role.USER); // 이란 사용자로 가입 할때
 		
 		return member;
 	}

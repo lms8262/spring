@@ -8,6 +8,6 @@ public class CartController {
 	
 	@GetMapping(value="/cart")
 	public String cartList() {
-		return "/cart/cartList";
+		return "cart/cartList";
 	}
 }

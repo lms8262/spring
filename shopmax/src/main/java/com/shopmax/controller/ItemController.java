@@ -9,18 +9,18 @@ public class ItemController {
 	// 상품 전체 리스트
 	@GetMapping(value="/item/shop")
 	public String itemShopList() {
-		return "/item/itemShopList";
+		return "item/itemShopList";
 	}
 	
 	// 상품등록 페이지
 	@GetMapping(value="/admin/item/new")
 	public String itemForm() {
-		return "/item/itemForm";
+		return "item/itemForm";
 	}
 	
 	// 상품관리 페이지
 	@GetMapping(value="/admin/items")
 	public String itemManage() {
-		return "/item/itemMng";
+		return "item/itemMng";
 	}
 }
