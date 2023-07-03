@@ -31,3 +31,12 @@
 
 학사일정
 
+시퀀스 필요한 테이블
+department	학과(3자리 101~)
+student	학생(8자리 23000001~)
+professor	교수(6자리 230001~)
+staff	교직원(4자리 2301~)
+lecture	강의(5자리 10001~)
+
+LectureRegistration
+
