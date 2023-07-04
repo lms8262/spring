@@ -1,5 +1,8 @@
-package com.university.entity;
+package com.shopmax.entity;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -7,30 +10,32 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 @Entity
+@Table(name = "order_item")
 @Getter
 @Setter
 @ToString
-public class StudentLecture {
+public class OrderItem extends BaseEntity{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "order_item_id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "student_id", nullable = false)
-	private Student student;
+	@JoinColumn(name = "item_id")
+	private Item item;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "lecture_id", nullable = false)
-	private Lecture lecture;
+	@JoinColumn(name = "order_id")
+	private Order order;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "grade", nullable = false)
-	private GradeScore gradeScore;
+	private int orderPrice;
+	
+	private int count;
 }
