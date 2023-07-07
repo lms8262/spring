@@ -20,9 +20,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ItemRestController {
 	
+	/*
 	private final ItemService itemService;
 	
-	// 상품관리 페이지
 		@GetMapping(value= {"/admin/items", "/admin/items/{page}"})
 		public Page<Item> itemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {
 			// of(조회할 페이지의 번호 ★0부터 시작, 한 페이지당 조회할 데이터의 개수)
@@ -36,4 +36,5 @@ public class ItemRestController {
 					
 			return items;
 		}
+	*/
 }
