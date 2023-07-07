@@ -1,7 +1,5 @@
 package com.shopmax.entity;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -38,4 +36,20 @@ public class OrderItem extends BaseEntity{
 	private int orderPrice;
 	
 	private int count;
+	
+	// 주문할 상품하고 주문 수량을 통해 orderItem 객체를 만듬
+	public static OrderItem createOrderItem(Item item, int count) {
+		OrderItem orderItem = new OrderItem();
+		orderItem.setItem(item);
+		orderItem.setCount(count);
+		orderItem.setOrderPrice(item.getPrice());
+		
+		item.removeStock(count); // 재고감소
+		
+		return orderItem;
+	}
+	
+	public int getTotalPrice() {
+		return orderPrice * count;
+	}
 }

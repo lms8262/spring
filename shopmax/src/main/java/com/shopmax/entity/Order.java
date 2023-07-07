@@ -49,4 +49,33 @@ public class Order {
 	// 다만 orderItem은 자식 테이블이 되므로 List로 만든다.
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY) // 연관관계의 주인 설정(부모 테이블로 지정)
 	private List<OrderItem> orderItems = new ArrayList<>();
+	
+	public void addOrderItem(OrderItem orderItem) {
+		this.orderItems.add(orderItem);
+		orderItem.setOrder(this); // ★양방향 참조관계 일때는 orderItem객체에도 order 객체를 세팅한다.
+	}
+	
+	
+	public static Order createOrder(Member member, List<OrderItem> orderItemList) {
+		Order order = new Order();
+		order.setMember(member);
+		
+		for(OrderItem orderItem : orderItemList) {
+			order.addOrderItem(orderItem);
+		}
+		
+		order.setOrderStatus(OrderStatus.ORDER);
+		order.setOrderDate(LocalDateTime.now());
+		
+		return order;
+	}
+	
+	// 총 주문 금액
+	public int getTotalPrice() {
+		int totalPrice = 0;
+		for(OrderItem orderItem : orderItems) {
+			totalPrice += orderItem.getTotalPrice();
+		}
+		return totalPrice;
+	}
 }
