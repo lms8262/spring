@@ -83,9 +83,9 @@
 					<div>
 						<nav 
 						th:with="start=${(orders.number / maxPage) * maxPage + 1},
-						end=(${(orders.totalPages == 0)? 1:
+						end=${(orders.totalPages == 0)? 1:
 						(start + (maxPage -1) < orders.totalPages ?
-						start + (maxPage -1) : orders.totalPages)})"
+						start + (maxPage -1) : orders.totalPages)}"
 						aria-label="...">
 							<ul class="pagination justify-content-center">
 							    <li class="page-item" th:classappend="${orders.first} ? 'disabled'">
@@ -93,7 +93,7 @@
 							    </li>
 							    <li class="page-item"
 							        th:each="page : ${#numbers.sequence(start, end)}"
-							        th:classappend="${orders.number eq page -1} ? 'active' : ''"
+							        th:classappend="${orders.number eq page -1} ? 'active'"
 							    >
 							    	<a class="page-link" th:href="'/orders/' + ${page - 1}"
 							    	>[[${page}]]</a>
