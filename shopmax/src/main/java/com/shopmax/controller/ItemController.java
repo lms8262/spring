@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.shopmax.dto.ItemFormDto;
 import com.shopmax.dto.ItemSearchDto;
+import com.shopmax.dto.MainItemDto;
 import com.shopmax.entity.Item;
 import com.shopmax.service.ItemService;
 
@@ -30,8 +31,15 @@ public class ItemController {
 	private final ItemService itemService;
 	
 	// 상품 전체 리스트
-	@GetMapping(value="/item/shop")
-	public String itemShopList() {
+	@GetMapping(value= "/item/shop")
+	public String itemShopList(Model model, ItemSearchDto itemSearchDto, Optional<Integer> page) {
+		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
+		Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
+		
+		model.addAttribute("items", items);
+		model.addAttribute("itemSearchDto", itemSearchDto);
+		model.addAttribute("maxPage", 5);
+		
 		return "item/itemShopList";
 	}
 	
@@ -115,13 +123,13 @@ public class ItemController {
 	List<MultipartFile> itemImgFileList) {
 		
 		if(bindingResult.hasErrors()) {
-			return "item/itemForm";
+			return "item/itemModifyForm";
 		}
 		
 		// 첫번째 이미지가 있는지 검사
 		if(itemImgFileList.get(0).isEmpty() && itemFormDto.getId() == null) {
 			model.addAttribute("errorMessage", "첫번째 상품 이미지는 필수입니다");
-			return "item/itemForm";
+			return "item/itemModifyForm";
 		}
 		
 		try {
@@ -129,7 +137,7 @@ public class ItemController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "상품 수정 중 에러가 발생했습니다.");
-			return "item/itemForm";
+			return "item/itemModifyForm";
 		}
 		
 		return "redirect:/";

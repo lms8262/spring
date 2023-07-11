@@ -45,7 +45,7 @@
 				<div class="col-md-2"></div>
 				<div class="col-md-8">
 					<h2 class="h3 mb-3 text-black">구매내역</h2>
-					<div th:each="order, status: ${orders.getContent()}">
+					<div th:each="order : ${orders.getContent()}">
 						<div class="d-flex mb-3 align-self-center">
 							<th:block th:if="${#strings.equals(order.orderStatus, 'ORDER')}">
 								<h4 style="font-size: 18px;" th:text="|${order.orderDate} 주문|"></h4>
@@ -55,16 +55,16 @@
 							</th:block>
 						</div>
 						<div class="card d-flex flex-row">
-							<div class="d-flex mb-3" style="width:90%">
+							<div class="d-flex mb-3" style="width:90%" th:each="orderItem : ${order.orderItemDtoList}">
 								<div class="repImgDiv">
-									<img class="rounded repImg" th:src="${order.orderItemDtoList[0].imgUrl}">
+									<img class="rounded repImg" th:src="${orderItem.imgUrl}" th:alt="${orderItem.itemNm}">
 								</div>
 								<div class="align-self-center w-75">
-									<span class="font-weight-bold" style="font-size: 18px; color: black;" th:text="${order.orderItemDtoList[0].itemNm}"></span>
+									<span class="font-weight-bold" style="font-size: 18px; color: black;" th:text="${orderItem.itemNm}"></span>
 									<div class="fs18 font-weight-light">
-										<span>[[${#numbers.formatInteger(order.orderItemDtoList[0].orderPrice, 0, 'COMMA')}]]원</span>
-										 / 
-										 <span th:text="|${order.orderItemDtoList[0].count}개|"></span>
+										<span th:text="|${#numbers.formatInteger(orderItem.orderPrice, 0, 'COMMA')}원|"></span>
+										 /
+										 <span th:text="|${orderItem.count}개|"></span>
 									</div>
 								</div>
 							</div>
@@ -89,17 +89,15 @@
 						aria-label="...">
 							<ul class="pagination justify-content-center">
 							    <li class="page-item" th:classappend="${orders.first} ? 'disabled'">
-							    	<a class="page-link" th:href="'/orders/' + ${orders.number - 1}">이전</a>
+							    	<a class="page-link" th:href="@{'/orders/' + ${orders.number - 1}}">이전</a>
 							    </li>
 							    <li class="page-item"
 							        th:each="page : ${#numbers.sequence(start, end)}"
-							        th:classappend="${orders.number eq page -1} ? 'active'"
-							    >
-							    	<a class="page-link" th:href="'/orders/' + ${page - 1}"
-							    	>[[${page}]]</a>
+							        th:classappend="${orders.number eq page -1} ? 'active'">
+							    	<a class="page-link" th:href="@{'/orders/' + ${page - 1}}">[[${page}]]</a>
 							    </li>
 							    <li class="page-item" th:classappend="${orders.last} ? 'disabled'">
-							    	<a class="page-link" th:href="'/orders/' + ${orders.number + 1}">다음</a>
+							    	<a class="page-link" th:href="@{'/orders/' + ${orders.number + 1}}">다음</a>
 							    </li>
 							</ul>
 						</nav>
