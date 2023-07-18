@@ -87,3 +87,14 @@ html 페이지
 강의 시간표 조회
 개설학과, 강의번호, 강의구분, 강의명, 담당교수, 학점, 요일 및 시간(강의실), 현재인원, 정원
 
+
+
+교수 번호(로그인한 교수 id)
+
+강의번호		lecture
+강의구분		lecture
+강의명		lecture
+학점		lecture
+요일 시간 (강의실)	lecture lecture lecture lecture_room
+현재인원		lecture
+정원		lecture
