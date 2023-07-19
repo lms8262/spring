@@ -92,9 +92,30 @@ html 페이지
 교수 번호(로그인한 교수 id)
 
 강의번호		lecture
-강의구분		lecture
+강의구분코드	lecture_code
+전공여부		lecture
 강의명		lecture
 학점		lecture
 요일 시간 (강의실)	lecture lecture lecture lecture_room
 현재인원		lecture
 정원		lecture
+
+
+점수 입력시 수강신청 -> 수강내역 테이블로 이동
+
+
+점수 입력시 가져올 정보
+강의명
+
+점수 미입력 학생(수강신청 테이블)
+학생 학번		lecture_registration.student.id
+학생 이름		user테이블하고 join	연관관계X
+학생 학과명	lecture_registration.student.department.name
+
+점수 입력 학생(수강내역 테이블) student_lecture 테이블, 
+학생 학번		student_lecture.student.id
+학생 이름		user테이블하고 join	연관관계X
+학생 학과명 	student_lecture.student.department.name
+등급		student_lecture.grade	A+ ~ F
+
+
