@@ -118,4 +118,6 @@ html 페이지
 학생 학과명 	student_lecture.student.department.name
 등급		student_lecture.grade	A+ ~ F
 
-
+/*<![CDATA[*/	
+	[[${userId}]]
+/*]]>*/
