@@ -121,3 +121,23 @@ html 페이지
 /*<![CDATA[*/	
 	[[${userId}]]
 /*]]>*/
+
+currentScore
+semesterScore
+totalScore
+
+년도	lecture.year
+학기	lecture.semester
+강의코드	lecture_code.detail
+강의번호	lecture.id
+강의명	lecture.name
+강의구분	lecture.type
+담당교수 user.name
+이수학점	lecture.credit
+성적(등급)	lectrue.grade
+
+년도	lecture.year
+학기	lecture.semester
+신청학점	sum(lecture.credit)
+취득학점(F제외)	sum(lecture.credit) f제외
+평균 평점	sum(grade_score.score) / sum(lecture.credit)
