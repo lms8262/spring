@@ -142,3 +142,8 @@ totalScore
 취득학점(F제외)	sum(lecture.credit) f제외
 평균 평점	sum(grade_score.score) / sum(lecture.credit)
 sum(grade_score.score * lecture.credit)
+
+년도	integer
+학기	integer
+전공여부	string
+
