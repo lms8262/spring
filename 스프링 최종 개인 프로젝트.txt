@@ -147,3 +147,13 @@ sum(grade_score.score * lecture.credit)
 학기	integer
 전공여부	string
 
+student
+department
+user
+3개 join
+
+professor
+department
+user
+3개 join
+
